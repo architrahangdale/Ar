@@ -70,7 +70,7 @@ darkButton.addEventListener('click', (e) => {
   darkButton.textContent = isDark ? '☀️' : '🌙';
 });
 
-// Make button movable
+// === Desktop Drag ===
 darkButton.addEventListener('mousedown', (e) => {
   dragging = true;
   offsetX = e.clientX - darkButton.offsetLeft;
@@ -89,4 +89,21 @@ document.addEventListener('mouseup', () => {
   dragging = false;
 });
 
-                        
+// === Mobile Drag ===
+darkButton.addEventListener('touchstart', (e) => {
+  dragging = true;
+  offsetX = e.touches[0].clientX - darkButton.offsetLeft;
+  offsetY = e.touches[0].clientY - darkButton.offsetTop;
+  e.preventDefault();
+});
+
+document.addEventListener('touchmove', (e) => {
+  if (dragging) {
+    darkButton.style.left = (e.touches[0].clientX - offsetX) + 'px';
+    darkButton.style.top = (e.touches[0].clientY - offsetY) + 'px';
+  }
+});
+
+document.addEventListener('touchend', () => {
+  dragging = false;
+});

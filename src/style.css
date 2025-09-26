@@ -137,6 +137,9 @@ img {
     background-color: var(--second-color);
     transition: .5s;
   }
+  .about__img {
+    display: none;
+  }
 }
 
 .nav__item {

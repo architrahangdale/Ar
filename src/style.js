@@ -92,18 +92,25 @@ document.addEventListener('mouseup', () => {
 // === Mobile Drag ===
 darkButton.addEventListener('touchstart', (e) => {
   dragging = true;
+  moved = false; // reset
   offsetX = e.touches[0].clientX - darkButton.offsetLeft;
   offsetY = e.touches[0].clientY - darkButton.offsetTop;
-  e.preventDefault();
 });
 
 document.addEventListener('touchmove', (e) => {
   if (dragging) {
+    moved = true; // finger moved, so it's a drag not a tap
     darkButton.style.left = (e.touches[0].clientX - offsetX) + 'px';
     darkButton.style.top = (e.touches[0].clientY - offsetY) + 'px';
   }
 });
 
 document.addEventListener('touchend', () => {
+  if (dragging && !moved) {
+    // It was just a tap, toggle theme
+    isDark = !isDark;
+    document.body.classList.toggle('dark', isDark);
+    darkButton.textContent = isDark ? '☀️' : '🌙';
+  }
   dragging = false;
 });

@@ -140,6 +140,10 @@ img {
     background-color: var(--second-color);
     transition: 0.5s;
   }
+  .about__img{
+    display: none;
+  }
+
 }
 
 .nav__item {
@@ -537,6 +541,8 @@ img {
 body.dark .home__social-icon:hover {
   color: var(--first-color); /* hover color remains highlight */
 }
+/*==== about image  ====*/
+
 }
 
 @media screen and (min-width: 992px) {

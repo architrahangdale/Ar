@@ -137,15 +137,6 @@ img {
     background-color: var(--second-color);
     transition: .5s;
   }
-  .about__img {
-    display: none;
-  }
-  .about_extra{
-    font-weight: 700;
-  }
-  .skills_extra{
-    font-weight: 700;
-  }
 }
 
 .nav__item {
@@ -556,29 +547,86 @@ img {
 /* ===== Dark theme =====*/
 /* Dark Mode Button */
 #darkButton {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  padding: 10px 15px;
-  background-color: #333;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: grab;
-  z-index: 1000;
-  user-select: none;
-  transition: background-color 0.3s, color 0.3s;
+    position: fixed;         /* required so left/top move it */
+    left: 20px;
+    top: 20px;
+    z-index: 9999;
+    padding: 0.5rem 0.6rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.1rem;
+    cursor: grab;
+    touch-action: none;      /* important for pointer dragging on touch devices */
+    user-select: none;
+    background: rgb(15, 15, 15);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+  #darkButton:active { cursor: grabbing; }
+  body.dark {
+    background: #0f1720;
+    color: #e6eef8;
+  }
+  /* ============  card ================     */
+  .work__card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+  text-align: center;
+  max-width: 320px;
+  margin: 1rem auto;
 }
 
-#darkButton:active {
-  cursor: grabbing;
+.work__card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
-/* Dark theme for body */
-body.dark {
-  background-color: #121212;
-  color: white;
+/* Title */
+.work__title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
+/* Description */
+.work__desc {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
 
-                        
+/* Button */
+.button {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.6rem;
+  font-size: 0.95rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background: #0056d2;
+}
+
+/* Dark theme support */
+body.dark .work__card {
+  background: #1f2937;
+  color: #e5e7eb;
+  box-shadow: 0 4px 20px rgba(255,255,255,0.05);
+}
+body.dark .work__title { color: #fff; }
+body.dark .work__desc { color: #ccc; }
+body.dark .button { background: #2563eb; }
+body.dark .button:hover { background: #1e40af; }
+/* ===== home social icon  dark mode ======*/
+ body.dark .home__social{
+  color: #ccc;
+ }

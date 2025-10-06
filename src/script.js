@@ -86,42 +86,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Use Pointer Events (works for mouse + touch + stylus)
   darkButton.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    dragging = true;
-    moved = false;
-    const rect = darkButton.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-    darkButton.setPointerCapture(e.pointerId);
-  });
+  // Prevent page scrolling while dragging (especially on mobile)
+  e.preventDefault();
+  e.stopPropagation();
 
-  document.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-    moved = true;
-    // compute clamped position so the button doesn't go off-screen
-    const btnRect = darkButton.getBoundingClientRect();
-    let x = e.clientX - offsetX;
-    let y = e.clientY - offsetY;
-    x = Math.max(0, Math.min(x, window.innerWidth - btnRect.width));
-    y = Math.max(0, Math.min(y, window.innerHeight - btnRect.height));
-    darkButton.style.left = x + 'px';
-    darkButton.style.top  = y + 'px';
-  });
+  dragging = true;
+  moved = false;
 
-  document.addEventListener('pointerup', (e) => {
-    if (!dragging) return;
-    try { darkButton.releasePointerCapture(e.pointerId); } catch (err) {}
-    // If it was a tap (no movement), toggle theme; otherwise treat as drag
-    if (!moved) {
-      isDark = !isDark;
-      setTheme(isDark);
-    } else {
-      // save final position after dragging
-      const finalRect = darkButton.getBoundingClientRect();
-      localStorage.setItem('darkButtonPos', JSON.stringify({ x: finalRect.left, y: finalRect.top }));
-    }
-    dragging = false;
-  });
+  // Prevent accidental scrolls and gestures
+  darkButton.style.touchAction = 'none';
+
+  const rect = darkButton.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+  darkButton.setPointerCapture(e.pointerId);
+});
+
+document.addEventListener('pointermove', (e) => {
+  if (!dragging) return;
+  e.preventDefault();  // Prevent scroll jitter on mobile
+  moved = true;
+  const btnRect = darkButton.getBoundingClientRect();
+  let x = e.clientX - offsetX;
+  let y = e.clientY - offsetY;
+  x = Math.max(0, Math.min(x, window.innerWidth - btnRect.width));
+  y = Math.max(0, Math.min(y, window.innerHeight - btnRect.height));
+  darkButton.style.left = x + 'px';
+  darkButton.style.top  = y + 'px';
+});
+
+document.addEventListener('pointerup', (e) => {
+  if (!dragging) return;
+  darkButton.style.touchAction = ''; // restore default touch behavior
+  try { darkButton.releasePointerCapture(e.pointerId); } catch (err) {}
+  if (!moved) {
+    isDark = !isDark;
+    setTheme(isDark);
+  } else {
+    const finalRect = darkButton.getBoundingClientRect();
+    localStorage.setItem('darkButtonPos', JSON.stringify({ x: finalRect.left, y: finalRect.top }));
+  }
+  dragging = false;
+});
+
 
   // Prevent synthetic click after pointer interactions from causing double toggles:
   darkButton.addEventListener('click', (e) => {

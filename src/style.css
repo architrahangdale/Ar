@@ -530,6 +530,13 @@ img {
     grid-template-columns: repeat(3, 1fr);
     column-gap: 2rem;
   }
+  body.dark .home__social-icon {
+  color: #fff; /* social icons (LinkedIn, GitHub, etc.) white */
+}
+
+body.dark .home__social-icon:hover {
+  color: var(--first-color); /* hover color remains highlight */
+}
 }
 
 @media screen and (min-width: 992px) {
